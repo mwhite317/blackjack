@@ -68,17 +68,20 @@ class Deck:
     #     self.discard_card = self.discard_pile.append(self.draw_card)
     #     return self.discard_card
 
+
 class Hand:
     def __init__(self):
         self.cards = []
         self.values = []
 
-
     def __str__(self):
         card_output = ""
         for card in self.cards:
             card_output += card.__str__() + ", "
-        return "Hand: {}".format(card_output[:-2])
+        return "cards: {}".format(card_output[:-2])
+
+    def value_string(self):
+        return "Count: {}\n".format(" or ".join(map(str, self.values)))
 
     def add_card(self, card):
         self.cards.append(card)
@@ -108,13 +111,22 @@ class Hand:
         if self.values == [20]:
             return True
 
+    def can_fold(self):
+        return True
+
     def get_options(self):
-        return [
+        return [option for option in [
             "Hit" if self.can_hit() else "",
             "Stand" if self.can_stand() else "",
             "Double" if self.can_double() else "",
-            "Split" if self.can_split() else ""
-        ]
+            "Split" if self.can_split() else "",
+            "Fold" if self.can_fold() else ""
+        ] if option != ""]
+
+
+class DealerHand(Hand):
+    def __str__(self):
+        return "cards: {} + ?\n".format(self.cards[0])
 
 
 if __name__ == '__main__':
@@ -150,7 +162,7 @@ if __name__ == '__main__':
     hand.add_card(_6_c)
     hand.add_card(_6_d)
     fail_hand.add_card(k_h)
-    fail_hand.add_card(k_h)
+    fail_hand.add_card(a_c)
     fail_hand.add_card(k_h)
     print(hand.values)
     print(fail_hand.values)
@@ -165,3 +177,9 @@ if __name__ == '__main__':
     print("Fail double:", fail_hand.can_double())
 
     print(hand.can_split())
+
+    dealer = DealerHand()
+
+    dealer.add_card(a_c)
+    dealer.add_card(k_h)
+    print(dealer)

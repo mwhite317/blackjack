@@ -1,6 +1,7 @@
 from random import randint
+import sys
 
-from deck import (Hand)
+from deck import (Hand, DealerHand)
 
 
 class Chips:
@@ -23,6 +24,7 @@ class Player:
         self.last_name = last_name
         self.first_name = first_name
         self.hand = Hand()
+        self.bets = 0
 
     def show_hand(self):
         for j in self.hand:
@@ -39,13 +41,50 @@ class Player:
 
     def bet_chips(self, chips_to_bet):
         self.chips.total -= chips_to_bet
+        self.bets += chips_to_bet
 
     def is_human(self):
         return False
 
+    def hand_string(self):
+        return "Your {}\nYour {}".format(self.hand, self.hand.value_string())
+
+
 class Human(Player):
     def is_human(self):
         return True
+
+
+class Dealer(Player):
+    def __init__(
+            self,
+            first_name,
+            last_name,
+            gender,
+            chips=Chips()):
+        self.chips = chips
+        self.gender = gender
+        self.last_name = last_name
+        self.first_name = first_name
+        self.hand = DealerHand()
+        self.bets = 0
+
+    def num_of_chips(self):
+        return sys.maxsize
+
+    def add_chips(self, chips_to_add):
+        pass
+
+    def bet_chips(self, chips_to_bet):
+        self.bets += chips_to_bet
+
+    def hand_string(self):
+        return "Dealer {}".format(self.hand)
+
+    def choose_option(self, options):
+        if min(self.hand.values) in range(16, 22):
+            return "Stand"
+        return "Hit"
 
 
 # I know what my hand is

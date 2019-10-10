@@ -4,20 +4,11 @@ from blackjack_players import *
 
 # a list of Player
 
-
-class Dealer:
-    pass
-
-
-# I interact directly with the Deck object
-# I deal hands
-
-
 class Game:
     def __init__(self, players):
         self.human_player = Human("John", "Doe", "M", Chips(500))
         self.deck = Deck()
-        self.players = []
+        self.players = [self.human_player]
         self.num_decks = 1
         for i in range(self.num_decks - 1):
             self.deck.add_deck_to_deck(Deck())
@@ -54,9 +45,10 @@ class Game:
 
 class Round:
     def __init__(self, deck, players):
-        self.players = players
         self.deck = deck
         self.pot = 0
+        self.dealer = Dealer("", "Dealer", "X")
+        self.players = players + [self.dealer]
 
         self.option_functions = {
             "Hit": self.hit,
@@ -67,20 +59,24 @@ class Round:
         }
 
     def start_round(self):
+        self.shuffle()
+        for p in self.players:
+            self.buy_in(p)
         self.deal_cards()
         for p in self.players:
             self.betting(p)
 
     def deal_cards(self):
-        self.deck.shuffle_deck()
-        print("Shuffling cards...")
-        print("Shuffled")
         for p in self.players:
             p.take_card(self.deck.draw_card())
 
         for p in self.players:
             p.take_card(self.deck.draw_card())
-        print("Dealing Cards...")
+        print("\nDealing Cards...\n")
+
+    def shuffle(self):
+        self.deck.shuffle_deck()
+        print("Shuffling cards...\n")
 
     def options_string(self, options):
         output = "Please choose one...\n"
@@ -93,37 +89,39 @@ class Round:
     def betting(self, player):
         if not player.is_human():
             return
-        print(player.hand)
+        print(player.hand_string())
+        print(self.dealer.hand_string())
         options = player.hand.get_options()
-        options.remove("")
 
         choice_input = input(self.options_string(options) + ": ")
+        print("")
 
         choice = int(choice_input) - 1
         self.option_functions[options[choice]](player)
-        print(player.hand)
 
     def hit(self, player):
         player.take_card(self.deck.draw_card())
-        print("Dealing a card...")
+        print("Dealing a card...\n")
+        print(player.hand_string())
 
-    # TODO
     def double(self, player):
-        self.pot += player.bet
-        player.chips -= player.bet
+        self.pot += player.bets
+        print("Doubling ...\n"
+              "Transferring {} chips into the pot...\n".format(player.bets))
+        player.bet_chips(player.bets)
         player.take_card(self.deck.draw_card())
+        print(player.hand_string())
 
     def split(self, player):
         # TODO implement split
         pass
 
     def stand(self, player):
-        pass
+        print("STANDING")
+        print(player.hand_string())
 
     def fold(self, player):
-        # TODO remove player from players?
-        # or add method to player.has_folded()
-        pass
+        print("FOLD\n")
 
     def after_bet(self):
         for player in self.players:
@@ -149,12 +147,32 @@ class Round:
         for player in self.players:
             player.reset_hand()
 
+    def buy_in(self, player):
+        if not player.is_human():
+            return
+        print("-- Buy in is at least 5 chips --")
+        while True:
+            try:
+                buyin = int(input("Enter your bet: "))
+                while buyin < 5 or buyin > player.num_of_chips():
+                    if buyin < 5:
+                        buyin = int(input("Bet too low! Enter your bet: "))
+                    if buyin > player.num_of_chips():
+                        buyin = int(input("Not enough funds! Enter your bet: "))
+                break
+            except:
+                pass
+
+        self.pot += buyin
+        player.bet_chips(buyin)
+
 
 # starting a round
 # at the start of each round reset their hands to be empty
 # at the end of each round, get their cards/return their hands
 
 if __name__ == '__main__':
+    print(
+        "\n\n\nCONVERT DEALERHAND TO NORMAL HAND AFTER PLAYER FINISHES MOVE. END ROUND. PLAY MULTIPLE ROUNDS. DEAL WITH SPLIT\n\n\n")
     rnd = Round(Deck(), [Human("Mark", "White", "M")])
     rnd.start_round()
-
