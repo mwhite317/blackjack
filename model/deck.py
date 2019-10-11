@@ -14,6 +14,11 @@ class Card:
         return self.suit == other.suit and self.value == other.value
 
     def values(self):
+        """
+        Defines special card values (Jack, Queen, King, Ace).
+
+        :return: card values with updated values to high cards
+        """
         card_values = {
             "Ace": [1, 11],
             "King": [10],
@@ -48,6 +53,11 @@ class Deck:
         return cards_string
 
     def create_deck(self):
+        """
+        Creates a deck by assigning card values to each suits.
+
+        :return: none
+        """
         for s in ["Spades", "Clubs", "Diamonds", "Hearts"]:
             for v in [
                 'Ace', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'Jack', 'Queen', 'King'
@@ -55,12 +65,28 @@ class Deck:
                 self.deck.append(Card(s, v))
 
     def add_deck_to_deck(self, new_deck):
+        """
+        Adds a new deck to the original deck.
+
+        :param new_deck: another deck
+        :return: none
+        """
         self.deck += new_deck.deck
 
     def shuffle_deck(self):
+        """
+        Uses random to shuffle dictionary of deck.
+
+        :return: none
+        """
         random.shuffle(self.deck)
 
     def draw_card(self):
+        """
+        Takes card out of deck.
+
+        :return: pops first card in dictionary
+        """
         return self.deck.popleft()
 
     # self.discard_pile = []
@@ -81,9 +107,21 @@ class Hand:
         return "cards: {}".format(card_output[:-2])
 
     def value_string(self):
+        """
+        Formats a the value.
+        Prints a string instead of a list.
+
+        :return: Total value formatted
+        """
         return "Count: {}\n".format(" or ".join(map(str, self.values)))
 
     def add_card(self, card):
+        """
+        Takes a card from deck and adds to player's hand
+
+        :param card: single card including value and suit
+        :return:
+        """
         self.cards.append(card)
         if len(self.values) == 0:
             self.values = card.values()
@@ -95,15 +133,35 @@ class Hand:
             self.values[i] += card.values()[0]
 
     def can_hit(self):
-        return min(self.values) < 21
+        """
+        Can hit if player's card value is under 20
+
+        :return: True or False
+        """
+        return min(self.values) < 22
 
     def can_stand(self):
-        return min(self.values) < 21
+        """
+        Can stand if player's card value is under 21
+
+        :return: True or False
+        """
+        return min(self.values) < 22
 
     def can_double(self):
+        """
+        Can  double is under 2 cards
+
+        :return: True or False
+        """
         return len(self.cards) == 2
 
     def can_split(self):
+        """
+        Can split if any pair, or pair of 10pt value cards
+
+        :return: True or False
+        """
         if len(self.cards) != 2:
             return False
         if self.cards[0].value == self.cards[1].value:
@@ -112,9 +170,20 @@ class Hand:
             return True
 
     def can_fold(self):
+        """
+        Always possible, there for always True
+
+        :return: True
+        """
         return True
 
     def get_options(self):
+        """
+       Runs through hit, stand, double, split, and fold.
+       Determine which are True.
+
+        :return: possible options based on player's hand
+        """
         return [option for option in [
             "Hit" if self.can_hit() else "",
             "Stand" if self.can_stand() else "",
@@ -127,6 +196,15 @@ class Hand:
 class DealerHand(Hand):
     def __str__(self):
         return "cards: {} + ?\n".format(self.cards[0])
+
+    def value_string(self):
+        """
+        Formats the dealer hand value.
+        Prints a string instead of a list.
+
+        :return: Total value formatted
+        """
+        return "Count: {}\n".format(" or ".join(map(str, self.cards[0].values())))
 
 
 if __name__ == '__main__':
