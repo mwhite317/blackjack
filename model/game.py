@@ -63,6 +63,7 @@ class Game:
             save.save(self.human_player)
             print("Goodbye {} {}, see you soon."
                   .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
+            sys.exit()
 
     def cash_out(self):
         """
