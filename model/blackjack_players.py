@@ -52,6 +52,9 @@ class Player:
         """
         return self.chips.total
 
+    def chip_string(self):
+        return "Current amount: {}".format(self.num_of_chips())
+
     def add_chips(self, chips_to_add):
         """
         Adds desired amount of chips to chip total.
@@ -152,63 +155,14 @@ class Dealer(Player):
 
         :return: Hit or Stand
         """
-        print(self.hand.values)
         if len(self.hand.values) == 2:
             if max(self.hand.values) in range(16, 22) or min(self.hand.values) in range(16, 22):
                 return "Stand"
         if min(self.hand.values) in range(16, 22):
             return "Stand"
         if min(self.hand.values) > 22:
-            print(self.hand.values)
             return "Fold"
         return "Hit"
 
     def reset_hand(self):
         self.hand = DealerHand()
-
-
-# I know what my hand is
-# I store the logic for an AI agent
-class RandomPlayer(Player):
-    def choose_move(self):
-        # TODO
-        if 21 in self.hand.values():
-            return "BLACKJACK"  # signify winning
-        if min(self.hand.values()) > 21:
-            return "FOLD"
-        choice = randint(2)
-        return ["BET", "HOLD", "FOLD"][choice]
-
-
-# makes random moves
-
-class EasyPlayer(Player):
-    # TODO rules for players
-    # easy player always stands on 14 or more
-    pass
-
-
-class TerminalPlayer(Player):
-    # TODO might not be needed anymore
-    pass
-
-
-class HardPlayer(Player):
-    # TODO stands on 17
-    # TODO knows card before so makes informed choice
-    pass
-
-
-# counts cards
-
-
-class ImpossiblePlayer(Player):
-    pass
-
-
-# has perfect knowledge of deck
-
-if __name__ == '__main__':
-    player = Player("Mark", "White", "M")
-
-    random_player = RandomPlayer("Jack", "Smith", "M")

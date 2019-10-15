@@ -134,11 +134,11 @@ class Hand:
 
     def can_hit(self):
         """
-        Can hit if player's card value is under 20
+        Can hit if player's card value is under 21
 
         :return: True or False
         """
-        return min(self.values) < 22
+        return min(self.values) < 21
 
     def can_stand(self):
         """
@@ -195,7 +195,7 @@ class Hand:
 
 class DealerHand(Hand):
     def __str__(self):
-        return "cards: {} + ?\n".format(self.cards[0])
+        return "cards: {} + ?".format(self.cards[0])
 
     def value_string(self):
         """
@@ -213,6 +213,8 @@ if __name__ == '__main__':
     a_c = Card("Clubs", "Ace")
     _6_c = Card("Spades", "6")
     _6_d = Card("Diamonds", "6")
+    _9_ = Card("Diamond", "9")
+    _3_ = Card("Diamond", "3")
     print("Cards print correctly: {}, {}, {}, {}".format(
         k_h, a_c, _6_c, _6_d))
     print(k_h.values())
@@ -235,26 +237,38 @@ if __name__ == '__main__':
 
     # Hand Class Test
     print("-" * 20)
-    hand = Hand()
-    fail_hand = Hand()
-    hand.add_card(_6_c)
-    hand.add_card(_6_d)
-    fail_hand.add_card(k_h)
-    fail_hand.add_card(a_c)
-    fail_hand.add_card(k_h)
-    print(hand.values)
-    print(fail_hand.values)
+    hand12 = Hand()
+    hand30 = Hand()
+    hand21 = Hand()
+    hand21.add_card(_9_)
+    hand21.add_card(_9_)
+    hand21.add_card(_3_)
+    hand12.add_card(_6_c)
+    hand12.add_card(_6_d)
+    hand30.add_card(k_h)
+    hand30.add_card(k_h)
+    hand30.add_card(k_h)
 
-    print("Hand hits:", hand.can_hit())
-    print("Fail hits:", fail_hand.can_hit())
+    assert hand12.can_hit()
+    assert hand21.can_hit() is False
+    assert hand30.can_hit() is False
 
-    print("Hand stand:", hand.can_stand())
-    print("Fail stands:", fail_hand.can_stand())
+    assert hand12.can_stand()
+    assert hand21.can_stand()
+    assert hand30.can_stand() is False
 
-    print("Hand double:", hand.can_double())
-    print("Fail double:", fail_hand.can_double())
+    assert hand12.can_double()
+    assert hand21.can_double() is False
+    assert hand30.can_double() is False
 
-    print(hand.can_split())
+    assert hand12.can_fold()
+    assert hand21.can_fold() is False
+    assert hand30.can_fold() is False
+
+    print("Hand double:", hand12.can_double())
+    print("Fail double:", hand30.can_double())
+
+    print(hand12.can_split())
 
     dealer = DealerHand()
 
