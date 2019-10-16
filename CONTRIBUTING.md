@@ -11,26 +11,6 @@ If you think you have found a bug in Blackjack, first make sure that you are tes
 - your issue may already have been fixed. If not, search our [issues list](https://github.com/mwhite317/blackjack/issues) 
 on GitHub in case a similar issue has already been opened.
 
-It is very helpful if you can prepare a reproduction of the bug. In other words, provide a small test case which can 
-run and confirm your bug. It makes it easier to find the problem and to fix it. Test cases should be provided as `curl` 
-commands which can be copied and pastde into a terminal to run it locally, for example:
-
-```sh
-# delete the index
-curl -XDELETE localhost:9200/test
-
-# insert a document
-curl -XPUT localhost:9200/test/test/1 -d '{
- "title": "test document"
-}'
-
-# this should return XXXX but instead returns YYY
-curl ....
-```
-
-Provide as much information as you can. You may think that the problem lies with your query, when actually it depends on 
-how your data is indexed. The easier it is for us to recreate your problem, the faster it is likely to be fixed.
-
 ## Feature requests
 
 If you find yourself wishing for a feature that doesn't exist in Blackjack, you are probably not alone. There are bound to 
