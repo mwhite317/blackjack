@@ -41,8 +41,9 @@ That is it!
 
 # Contributing
 You may want to contribute to Blackjack: 
-* CONTRIBUTING.md will help you get Blackjack up and running.
-* If you would like to contribute code, please follow our STYLEGUIDE.md.
+* [CONTRIBUTING.md](https://github.com/mwhite317/blackjack/blob/master/CONTRIBUTING.md)
+will help you get Blackjack up and running.
+* If you would like to contribute code, please follow our STYLEGUIDE.md.(soon to be added)
 * For all other questions, check out the FAQ.md and wiki.
 
 # Authors
