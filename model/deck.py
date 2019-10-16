@@ -83,16 +83,11 @@ class Deck:
 
     def draw_card(self):
         """
-        Takes card out of deck.
+        Takes card out of deck when drawn.
 
         :return: pops first card in dictionary
         """
         return self.deck.popleft()
-
-    # self.discard_pile = []
-    # def discard_card_in_pile(self):
-    #     self.discard_card = self.discard_pile.append(self.draw_card)
-    #     return self.discard_card
 
 
 class Hand:
@@ -120,7 +115,7 @@ class Hand:
         Takes a card from deck and adds to player's hand
 
         :param card: single card including value and suit
-        :return:
+        :return: none
         """
         self.cards.append(card)
         if len(self.values) == 0:
@@ -238,13 +233,15 @@ if __name__ == '__main__':
     # Hand Class Test
     print("-" * 20)
     hand12 = Hand()
-    hand30 = Hand()
+    hand12.add_card(_6_c)
+    hand12.add_card(_6_d)
+
     hand21 = Hand()
     hand21.add_card(_9_)
     hand21.add_card(_9_)
     hand21.add_card(_3_)
-    hand12.add_card(_6_c)
-    hand12.add_card(_6_d)
+
+    hand30 = Hand()
     hand30.add_card(k_h)
     hand30.add_card(k_h)
     hand30.add_card(k_h)
@@ -261,14 +258,13 @@ if __name__ == '__main__':
     assert hand21.can_double() is False
     assert hand30.can_double() is False
 
+    assert hand12.can_split()
+    assert hand21.can_split() is False
+    assert hand30.can_split() is False
+
     assert hand12.can_fold()
     assert hand21.can_fold() is False
     assert hand30.can_fold() is False
-
-    print("Hand double:", hand12.can_double())
-    print("Fail double:", hand30.can_double())
-
-    print(hand12.can_split())
 
     dealer = DealerHand()
 

@@ -1,5 +1,5 @@
-from deck import *
 from blackjack_players import *
+from deck import *
 from human_connections import SavePlayer
 
 
@@ -14,28 +14,34 @@ class Game:
 
     def start(self):
         """
-        Adds chips to human player if they start game with 0.
-        Calls round class to begin round.
+        Adds chips to human player if they start game with 0. Calls round class to begin round.
 
         :return: none
         """
+        pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
         if self.human_player.num_of_chips() == 0:
             print(
-                "It seems you don't have any chips with you. Don't worry we will buy you in..."
-                "\ntransferring chips ...")
+                "{} {}, It seems you don't have any chips with you. Don't worry we will buy you in..."
+                "\ntransferring chips ...\n"
+                    .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
             self.human_player.add_chips(500)
             print(self.human_player.chip_string())
+            self.shall_we_play()
+
+        else:
+            print("Welcome back {} {}, good to see you again."
+                  .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
+            print(self.human_player.chip_string())
+            self.shall_we_play()
 
         while self.human_player_left():
-            self.shall_we_play()
-            print(self.human_player.chip_string())
             rund = Round(self.deck, self.players)
             rund.start_round()
             self.cash_out()
 
     def human_player_left(self):
         """
-        Checks if any human players are left in the round
+        Checks if any human players are left in the round.
 
         :return: number  of human player left
         """
@@ -43,32 +49,29 @@ class Game:
 
     def shall_we_play(self):
         """
-        Confirms if player wants to play.
-        Provides an exit if the player wants to leave the game
+        Confirms if player wants to play. Provides an exit if the player wants to leave the game.
 
-        :return: player_input  and acts based on their decision
+        :return: none
         """
         play_input = input("\nShall we play?\n" "1. yes\n" "2. no\n" ": ")
         if play_input == "1":
             pass
-            # round = Round()
-            # start round
-        else:
-            pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
 
-            print("Saving...")
-            print("Please type in same first name, last name, and gender from the beginning of the game to "
+        else:
+            print("\nSaving...")
+            print("Please remember to type in same first name, last name, and gender from the beginning of the game to "
                   "access your account.")
             save = SavePlayer()
             save.save(self.human_player)
-            print("Goodbye {} {}, see you soon."
+            pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
+            print("Goodbye {} {}, hope to see you soon."
                   .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
             sys.exit()
 
     def cash_out(self):
         """
-        Cashes out players with no more money
-        Buys human players back in the game.
+         Buys human players back in the game.
+
         :return: none
         """
         if self.human_player.num_of_chips() < 6:
@@ -97,9 +100,8 @@ class Round:
 
     def start_round(self):
         """
-        Calls shuffle function.
-        For each player,  asks for buy in using calls buy_in function.
-        For each player, asks for bet using betting function.
+        Calls shuffle function. For each player, asks for buy in using calls buy_in function,
+         then asks for bet using betting function.
 
         :return: none
         """
@@ -115,7 +117,7 @@ class Round:
     def deal_cards(self):
         """
         Deals two card to each player in the round.
-        Note that each player receives one card before dealer gives a second
+        Note that each player receives one card before dealer gives a second.
 
         :return:  none
         """
@@ -128,7 +130,7 @@ class Round:
 
     def shuffle(self):
         """
-        Shuffles deck by calling Deck class in Deck file
+        Shuffles deck by calling Deck class in Deck file.
 
         :return: none
         """
@@ -137,8 +139,7 @@ class Round:
 
     def options_string(self, options):
         """
-        Formats the option menu.
-        Adjust numbers depending on available options.
+        Formats the option menu. Adjust numbers depending on available options.
 
         :param options: refers to the options set in Hand class from Deck file.
         :return: the organised menu for player
@@ -152,10 +153,8 @@ class Round:
 
     def betting(self, player):
         """
-        Checks if player is human.
-        Prints player's cards and dealer's first card for human player to see.
-        Prints menu for player.
-        Takes menu input from player.
+        Checks if player is human. Prints player's cards and dealer's first card for human player to see.
+        Prints menu for player. Takes menu input from player.
 
         :param player:  player who is playing the round
         :return: none
@@ -198,10 +197,11 @@ class Round:
 
     def double(self, player):
         """
-        Player pays the additional same amount paid in buy_in function
-        Player is given another card and is not allowed to bet afterwards.
+        Player pays the additional same amount paid in buy_in function. Player is given another card and is prevented
+        to bet afterwards.
+
         :param player: player who is betting
-        :return: updated player's cards
+        :return: none
         """
         self.pot += player.bets
         self.player_continues = False
@@ -216,27 +216,28 @@ class Round:
 
     def stand(self, player):
         """
-        Does nothing but print statements.
-        Confirms player is Standing
+        Prevents player to continue betting.
+
         :param player: player who is betting
-        :return: player's hand
+        :return: none
         """
         self.player_continues = False
         print("You stand.")
 
     def fold(self, player):
         """
-        Acknowledges that player loses automatically.
+        Prevents the player to continue betting.
 
         :param player: player who is betting
-        :return: print statement
+        :return: none
         """
         self.player_continues = False
+        self.human_bust = True
         print("FOLD\n")
 
     def bust(self):
         """
-            Bust player
+         Prevents the player and dealer to continue betting. Player loses automatically.
 
         :return: print statement
         """
@@ -247,6 +248,11 @@ class Round:
         print("BUST!\n")
 
     def end_of_round(self):
+        """
+        Determines winner if player did not bust or fold. Adds pot amount to winning player and resets values.
+
+        :return: none
+        """
         if self.human_bust:
             print("Dealer wins.\n")
             self.dealer.add_chips(self.pot)
@@ -285,12 +291,11 @@ class Round:
 
         self.reset()
 
-    def reset(self):
-        self.pot = 0
-        self.reset_hands()
-        self.deck = Deck()
-
     def dealer_turn(self):
+        """
+        Allows the dealer to hit, stand or fold
+        :return:
+        """
         self.dealer.bet_chips(self.pot)
         self.pot += self.pot
         print(self.human_player.hand_string())
@@ -302,16 +307,31 @@ class Round:
                 self.dealer.take_card(self.deck.draw_card())
                 print("Dealer hits...")
                 print(self.dealer.hand_string())
-            if option == "Fold":
+            if option == "Bust":
                 self.dealer_continues = False
-                print("Dealer folds...")
+                print("Dealer Busts.")
                 print(self.dealer.hand_string())
             if option == "Stand":
                 self.dealer_continues = False
                 print("Dealer stands...")
                 print(self.dealer.hand_string())
 
+    def reset(self):
+        """
+        Resets hands, decks, and reshuffles deck.
+
+        :return:
+        """
+        self.pot = 0
+        self.reset_hands()
+        self.deck = Deck()
+
     def reset_hands(self):
+        """
+        Resets each players hand.
+
+        :return: none
+        """
         for player in self.players:
             player.reset_hand()
 
@@ -320,6 +340,7 @@ class Round:
         Player buys in.
         Restrictions: must be more than 5 and within the account balance.
         Buy amount is then deducted from player account balance and added to pot.
+
         :param player: player who is betting
         :return: buy in amount
         """
@@ -346,14 +367,19 @@ class Round:
         player.bet_chips(buyin)
 
     def saving_game(self):
+        """
+        Allows player to continue from where the ended.
+
+        :return: none
+        """
         pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
 
         print("Saving...")
-        print("Please type in same first name, last name, and gender from the beginning of the game to "
+        print("Please remember to type in same first name, last name, and gender from the beginning of the game to "
               "access your account.")
         save = SavePlayer()
         save.save(self.human_player)
-        print("Goodbye {} {}, see you soon."
+        print("Goodbye {} {}, hope to see you soon."
               .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
 
 

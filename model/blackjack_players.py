@@ -1,11 +1,10 @@
-from random import randint
 import sys
 
 from deck import (Hand, DealerHand)
 
 
 class Chips:
-    def __init__(self, total=500):
+    def __init__(self, total=0):
         self.total = total
 
     def __str__(self):
@@ -128,6 +127,13 @@ class Dealer(Player):
         return sys.maxsize
 
     def add_chips(self, chips_to_add):
+        """
+        Passes to avoid complication with Dealers amount. Dealer has infinite amount of chips, therefore, there is no
+        need to add chips to dealer.
+
+        :param chips_to_add: chips that dealer wins.
+        :return: none/pass
+        """
         pass
 
     def bet_chips(self, chips_to_bet):
@@ -161,8 +167,13 @@ class Dealer(Player):
         if min(self.hand.values) in range(16, 22):
             return "Stand"
         if min(self.hand.values) > 22:
-            return "Fold"
+            return "Bust"
         return "Hit"
 
     def reset_hand(self):
+        """
+        Resets Dealer hand for next round.
+
+        :return: none
+        """
         self.hand = DealerHand()
