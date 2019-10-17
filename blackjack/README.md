@@ -1,5 +1,5 @@
 # Blackjack
-Blackjack is your window to master casino blackjack. Specifically, it is a game that allows the player 
+Blackjack is your window to master casino blackjack in the Terminal. Specifically, it is a game that allows the player 
 to practice blackjack strategies.The object of the game is for the player to beat the dealer. Depending on the 
 player's cards, the player can hit, stand, double, split, or fold. 
 
@@ -8,36 +8,22 @@ dealer's turn following the results from the round. Similar to electronic blackj
 continues until the player quits. As a result, the game saves the player's information and chips for the next time they log in 
 to play.
 
-# Getting Started
-There are only two things to have downloaded to play Blackjack:
-1. Python3 downloaded
-2. blackjack-master folder
+## Basic setup
 
-## Prerequisites
-Before you can start playing Blackjack, make sure to have Python3 downloaded.
+Install the requirements:
+```
+$ pip install -r requirements.txt
+```
 
-If you have not yet downloaded Python3, you can download the newest version of [Python3 here](https://www.python.org/downloads/).
-Please [watch this video tutorial](https://www.youtube.com/watch?v=uA8SA81nivg) for anymore assistance.
+Run the application:
+```
+$ python -m blackjack --help
+```
 
-## Installing
-After Python3 is dowloaded, then download the Blackjack.zip folder. Then take the folder and drag it into
-your Desktop.
-
-After placing the folder in the Desktop, open up the command line a.k.a. the Terminal appilcation.
-
-Once opened, type
-
-`cd Desktop/`
-
-Then
-
-`cd blackjack-master/model/`
-
-Lastly, start the game by typing
-
-`python3 main.py`
-
-That is it!
+To run the tests:
+```
+    $ pytest
+```
 
 # Contributing
 You may want to contribute to Blackjack: 
