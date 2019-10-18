@@ -25,7 +25,7 @@ def blackjack_welcome(player):
     pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
 
     print(
-        "\nWelcome {} {} to blackjack. It may have been a while since you played, here are the basic rule...".format(
+        "\nWelcome {} {} to blackjack. It may have been a while since you played, here are the basic rules...".format(
             pronouns.get(player.gender, "X"), player.last_name))
 
 

@@ -22,7 +22,7 @@ $ python -m blackjack --help
 
 To run the tests:
 ```
-    $ pytest
+$ pytest
 ```
 
 # Contributing
@@ -33,7 +33,7 @@ will help you get Blackjack up and running.
 * For all other questions, check out the FAQ.md and wiki.
 
 # Authors
-* **Mark White** - *Initial work* - [mwhit317](https://github.com/mwhite317)
+* **Mark White** - *Initial work* - [mwhite317](https://github.com/mwhite317)
 
 See also the list of contributors who participated in this project.
 
