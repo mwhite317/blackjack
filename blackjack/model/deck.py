@@ -203,20 +203,6 @@ class DealerHand(Hand):
 
 
 if __name__ == '__main__':
-    # Card Class Test
-    k_h = Card("Hearts", "King")
-    a_c = Card("Clubs", "Ace")
-    _6_c = Card("Spades", "6")
-    _6_d = Card("Diamonds", "6")
-    _9_ = Card("Diamond", "9")
-    _3_ = Card("Diamond", "3")
-    print("Cards print correctly: {}, {}, {}, {}".format(
-        k_h, a_c, _6_c, _6_d))
-    print(k_h.values())
-    print(a_c.values())
-    print(_6_c.values())
-    print(_6_d.values())
-
     # Deck Class Test
     deck = Deck()
 
@@ -230,44 +216,3 @@ if __name__ == '__main__':
     print("-" * 20)
     print(deck.draw_card())
 
-    # Hand Class Test
-    print("-" * 20)
-    hand12 = Hand()
-    hand12.add_card(_6_c)
-    hand12.add_card(_6_d)
-
-    hand21 = Hand()
-    hand21.add_card(_9_)
-    hand21.add_card(_9_)
-    hand21.add_card(_3_)
-
-    hand30 = Hand()
-    hand30.add_card(k_h)
-    hand30.add_card(k_h)
-    hand30.add_card(k_h)
-
-    assert hand12.can_hit()
-    assert hand21.can_hit() is False
-    assert hand30.can_hit() is False
-
-    assert hand12.can_stand()
-    assert hand21.can_stand()
-    assert hand30.can_stand() is False
-
-    assert hand12.can_double()
-    assert hand21.can_double() is False
-    assert hand30.can_double() is False
-
-    assert hand12.can_split()
-    assert hand21.can_split() is False
-    assert hand30.can_split() is False
-
-    assert hand12.can_fold()
-    assert hand21.can_fold() is False
-    assert hand30.can_fold() is False
-
-    dealer = DealerHand()
-
-    dealer.add_card(a_c)
-    dealer.add_card(k_h)
-    print(dealer)
