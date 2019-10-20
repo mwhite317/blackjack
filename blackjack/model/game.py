@@ -54,24 +54,22 @@ class Game:
         :return: none
         """
         play_input = input("\nShall we play?\n" "1. yes\n" "2. no\n" ": ")
-        while play_input in "12":
-            if play_input == "1":
-                pass
 
-            elif play_input == "2":
-                print("\nSaving...")
-                print("Please remember to type in same first name, last name, and gender from the beginning of the "
-                      "Gamgame to "
-                      "access your account.")
-                save = SavePlayer()
-                save.save(self.human_player)
-                pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
-                print("Goodbye {} {}, hope to see you soon."
-                      .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
-                sys.exit()
-            else:
-                print("Error! Please choose 1 or 2:")
-                play_input = input("\nShall we play?\n" "1. yes\n" "2. no\n" ": ")
+        if play_input == "1":
+            pass
+
+        else:
+            print("\nSaving...")
+            print("Please remember to type in same first name, last name, and gender from the beginning of the "
+                  "Gamgame to "
+                  "access your account.")
+            save = SavePlayer()
+            save.save(self.human_player)
+            pronouns = {"M": "Mr.", "F": "Ms.", "X": "Mx."}
+            print("Goodbye {} {}, hope to see you soon."
+                  .format(pronouns.get(self.human_player.gender, "X"), self.human_player.last_name))
+            sys.exit()
+
 
 
     def cash_out(self):
