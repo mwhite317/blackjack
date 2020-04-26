@@ -1,4 +1,4 @@
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=mwhite317_blackjack&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=mwhite317_blackjack)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mwhite317_blackjack&metric=alert_status)](https://sonarcloud.io/dashboard?id=mwhite317_blackjack)
 
 # Blackjack
 Blackjack is your window to master casino blackjack. Specifically, it is a game that allows the player 
